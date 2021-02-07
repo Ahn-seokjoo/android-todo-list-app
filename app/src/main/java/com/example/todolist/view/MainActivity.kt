@@ -15,6 +15,6 @@ class MainActivity : AppCompatActivity() {
     //버튼 클릭시에 다음 페이지로 넘어감
     fun buttonClick(view: View) {
         val intent = Intent(this,AddPage::class.java)
-        startActivity(intent)
+        startActivityForResult(intent,0)
     }
 }
