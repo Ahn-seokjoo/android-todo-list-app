@@ -16,16 +16,16 @@ val TAG = MainActivity::class.java.simpleName
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var binding2: ItemTextBinding
+    private lateinit var binding2: ItemTextBinding  // 1. 두개를 선언하는게 맞는 것인지
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        binding2 = ItemTextBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val adapter = TodoListAdapter { view, position -> //꼭 view,position이 아니라 필요한걸 받아줘도 된다
-            //체크, 안체크 ischecked로 구현,
+        val adapter = TodoListAdapter { _, _ -> //꼭 view,position이 아니라 필요한걸 받아줘도 된다
             binding2.checkboxText.isChecked =
-                !binding2.checkboxText.isChecked // 1. 두개를 선언하는게 맞는 것인지
+                !binding2.checkboxText.isChecked
         }
         binding.mRecyclerView.adapter = adapter
         //버튼 클릭시에 다음 페이지로 넘어감
@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
                     val todoTimeList: List<TodoList> =
                         listOf(TodoList(todoList, currentTime.toString()))
 
-                    TodoListAdapter().submitList(todoTimeList)
-                    binding.mRecyclerView.invalidate() //2. 화면 갱신.. 없어도 되긴하는데..
+                    TodoListAdapter().submitList(todoTimeList) //2. 다른 곳에서 쓰이는데 어떻게 ?
+                    binding.mRecyclerView.invalidate() //3. 화면 갱신.. 없어도 되긴하는데..
                 }
             }
         }
