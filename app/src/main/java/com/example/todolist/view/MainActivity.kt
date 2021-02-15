@@ -7,23 +7,30 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.R
 import com.example.todolist.data.TodoList
 import com.example.todolist.databinding.ActivityMainBinding
-import com.example.todolist.view.TodoListAdapter
+import com.example.todolist.databinding.ItemTextBinding
 
-// 클릭 리스너(on,off) 구현
-// 액티비티 바뀌어도 데이터 유지
+
+// 수정시에 맨 위로 올라가기(수정 페이지는 원래 데이터 받아와서 수정)
+// 길게 누를시에 삭제, 수정 버튼 구현
 val TAG = MainActivity::class.java.simpleName
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var binding2: ItemTextBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val adapter = TodoListAdapter(baseContext)
+        val adapter = TodoListAdapter { view, position -> //꼭 view,position이 아니라 필요한걸 받아줘도 된다
+            //체크, 안체크 ischecked로 구현,
+            binding2.checkboxText.isChecked =
+                !binding2.checkboxText.isChecked // 1. 두개를 선언하는게 맞는 것인지
+        }
         binding.mRecyclerView.adapter = adapter
+        //버튼 클릭시에 다음 페이지로 넘어감
+
     }
-    //버튼 클릭시에 다음 페이지로 넘어감
     fun buttonClick(view: View) {
         val intent = Intent(this, AddPage::class.java)
         startActivityForResult(intent, 100)
@@ -40,12 +47,12 @@ class MainActivity : AppCompatActivity() {
                     val todoTimeList: List<TodoList> =
                         listOf(TodoList(todoList, currentTime.toString()))
 
-                    TodoListAdapter(baseContext).submitList(todoTimeList)
-                    binding.mRecyclerView.invalidate() //화면 갱신.. 없어도 되긴하는데..
+                    TodoListAdapter().submitList(todoTimeList)
+                    binding.mRecyclerView.invalidate() //2. 화면 갱신.. 없어도 되긴하는데..
                 }
             }
         }
     }
 
-
 }
+

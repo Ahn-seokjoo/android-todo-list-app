@@ -34,6 +34,7 @@
         app:reverseLayout="true"
         app:stackFromEnd="true"
         tools:ignore="MissingConstraints"
-        tools:listitem="@layout/item_text" />
+        tools:listitem="@layout/item_text"
+        android:longClickable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
