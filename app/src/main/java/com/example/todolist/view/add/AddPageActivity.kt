@@ -1,4 +1,4 @@
-package com.example.todolist.view
+package com.example.todolist.view.add
 
 import android.app.Activity
 import android.content.Intent
@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.R
+import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ActivityAddPageBinding
 import java.time.LocalDateTime
 
-class AddPage : AppCompatActivity() {
+
+class AddPageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +22,8 @@ class AddPage : AppCompatActivity() {
 
     fun addButtonClick(view: View) {
         val intent = Intent()
-        intent.putExtra("todoList", binding.todoText.text.toString())
-        intent.putExtra("currentTime", LocalDateTime.now().toString())
+        val todo = Todo(binding.todoText.text.toString(), LocalDateTime.now().toString())
+        intent.putExtra("todo", todo)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

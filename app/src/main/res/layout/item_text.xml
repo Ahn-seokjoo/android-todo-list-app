@@ -2,22 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <CheckedTextView
-        android:id="@+id/checkboxText"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:checked="false"
-        android:clickable="true"
-        android:drawableRight="@android:drawable/checkbox_off_background"
-        android:textSize="30dp"
-        android:longClickable="true" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/currentTimeText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="20dp" />
+        <TextView
+            android:id="@+id/checkboxText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:longClickable="true"
+            android:text="할 일"
+            android:textSize="30dp" />
 
+        <TextView
+            android:id="@+id/currentTimeText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="2010-10-10"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

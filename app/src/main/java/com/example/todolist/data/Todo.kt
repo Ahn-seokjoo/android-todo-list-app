@@ -1,6 +1,8 @@
 package com.example.todolist.data
 
-data class TodoList(
+import java.io.Serializable
+
+data class Todo(
     val doList: String,
     val time: String
-)
+) : Serializable
