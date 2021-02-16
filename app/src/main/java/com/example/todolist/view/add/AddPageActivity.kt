@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.R
 import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ActivityAddPageBinding
+import com.example.todolist.view.main.MainActivity.Companion.CONST_TO_DO
 import java.time.LocalDateTime
-
 
 class AddPageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPageBinding
@@ -23,7 +23,7 @@ class AddPageActivity : AppCompatActivity() {
     fun addButtonClick(view: View) {
         val intent = Intent()
         val todo = Todo(binding.todoText.text.toString(), LocalDateTime.now().toString())
-        intent.putExtra("todo", todo)
+        intent.putExtra(CONST_TO_DO, todo)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

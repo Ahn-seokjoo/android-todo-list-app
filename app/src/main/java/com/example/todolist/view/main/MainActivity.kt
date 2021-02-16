@@ -14,6 +14,12 @@ import com.example.todolist.view.add.AddPageActivity
 val TAG = MainActivity::class.java.simpleName
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val REQUEST_CODE_ADD = 100
+        const val REQUEST_CODE_MODIFY = 200
+        const val CONST_TO_DO = "todo"
+    }
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 //            binding2.checkboxText.isChecked =
 //                !binding2.checkboxText.isChecked
         }
+
         binding.mRecyclerView.adapter = adapter
         //버튼 클릭시에 다음 페이지로 넘어감
     }
@@ -40,18 +47,15 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK && data != null) {
             when (requestCode) {
                 REQUEST_CODE_ADD -> {
-                    val todo = data.getSerializableExtra("todo") as Todo
+                    val todo = data.getSerializableExtra(CONST_TO_DO) as Todo
                     val todoTime: List<Todo> = listOf(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-                    adapter.submitList(todoTime) //2. 다른 곳에서 쓰이는데 어떻게 ?
+                    adapter.submitList(todoTime)
                 }
             }
         }
     }
 
-    companion object {
-        const val REQUEST_CODE_ADD = 100
-    }
 }
 

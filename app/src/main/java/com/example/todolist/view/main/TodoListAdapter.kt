@@ -1,18 +1,20 @@
 package com.example.todolist.view.main
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ItemTextBinding
+import com.example.todolist.view.modify.ModifyPageActivity
 
 private val todoList = mutableListOf<Todo>()//비어있는 리스트로 일단 초기화
 
 class TodoListAdapter(private val itemClickListener: (view: View, position: Int) -> Unit) :
     RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
-    val checkedMap = mutableMapOf<Todo, Boolean>()
+    private val checkedMap = mutableMapOf<Todo, Boolean>()
 
     fun submitList(data: List<Todo>) {
 //        todoList.clear()
@@ -21,14 +23,15 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
         //UI를 다시 그리는 메서드
     }
 
-    class ViewHolder(val binding: ItemTextBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemTextBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(text: Todo, checkedMap: MutableMap<Todo, Boolean>) {
             binding.checkbox.isChecked = checkedMap[todoList[adapterPosition]] ?: false
             binding.checkboxText.text = text.doList
             binding.currentTimeText.text = text.time
-
-            binding.root.setOnClickListener {
-
+            binding.checkboxText.setOnLongClickListener { v ->
+                val intent = Intent(v.context, ModifyPageActivity::class.java)
+                v.context.startActivity(intent)
+                false
             }
         }
     }
@@ -58,5 +61,6 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
     override fun getItemCount(): Int {
         return todoList.size
     }
-
 }
+
+
