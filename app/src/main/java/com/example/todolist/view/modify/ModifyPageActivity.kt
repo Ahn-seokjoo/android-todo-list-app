@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.databinding.ActivityModyfyPageBinding
-import com.example.todolist.view.main.MainActivity
 
 class ModifyPageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityModyfyPageBinding
@@ -15,13 +14,13 @@ class ModifyPageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
     }
-
+//    REQUEST_CODE_MODIFY
     fun modifyButtonClick(view: View) {
-        //1. 있는 데이터 받아오기
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        //2. 수정하기
-    }
-
-
+    //1. 있는 데이터 받아오기
+    val intent = Intent()
+    intent.putExtra("result", binding.modifyText.text.toString())
+    setResult(RESULT_OK, intent)
+    finish()
+    //2. 수정하기
+}
 }

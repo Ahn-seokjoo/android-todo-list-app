@@ -3,10 +3,12 @@ package com.example.todolist.view.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ActivityMainBinding
 import com.example.todolist.view.add.AddPageActivity
+import com.example.todolist.view.main.TodoListAdapter.OnItemLongClickListener
 
 
 // 수정시에 맨 위로 올라가기(수정 페이지는 원래 데이터 받아와서 수정)
@@ -28,14 +30,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val adapter = TodoListAdapter { _, _ -> //꼭 view,position이 아니라 필요한걸 받아줘도 된다
-//            binding2.checkboxText.isChecked =
-//                !binding2.checkboxText.isChecked
         }
 
         binding.mRecyclerView.adapter = adapter
         //버튼 클릭시에 다음 페이지로 넘어감
-    }
+        adapter.setOnItemLongClickListener(object : OnItemLongClickListener {
+            override fun onItemClick(view: View, position: Int) {
+                Toast.makeText(view.context, "롱클릭", Toast.LENGTH_SHORT).show()
+            }
+        })
 
+        //롱클릭시에 startActivityForResult로 받고, 클릭시에 intent로 리스트아이템 정보를 넘겨주면 그대로 뜸뜸
+    }
     fun buttonClick(view: View) {
         val intent = Intent(this, AddPageActivity::class.java)
         startActivityForResult(intent, REQUEST_CODE_ADD)
