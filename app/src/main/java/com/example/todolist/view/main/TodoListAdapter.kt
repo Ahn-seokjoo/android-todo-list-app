@@ -31,19 +31,18 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
         //UI를 다시 그리는 메서드
     }
 
-    inner class ViewHolder(val binding: ItemTextBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(text: Todo, checkedMap: MutableMap<Todo, Boolean>) {
-            binding.todoListText.isChecked = checkedMap[todoList[adapterPosition]] ?: false
-            binding.checkboxText.text = text.doList
-            binding.currentTimeText.text = text.time
+     class ViewHolder(val binding: ItemTextBinding) : RecyclerView.ViewHolder(binding.root) {
+         fun bind(text: Todo, checkedMap: MutableMap<Todo, Boolean>) {
+             binding.checkBox.isChecked = checkedMap[todoList[adapterPosition]] ?: false
+             binding.todoListText.text = text.doList
+             binding.currentTimeText.text = text.time
 
-            binding.todoListText.setOnLongClickListener {
-                fun onItemLongClick(view: View, position: Int) {
-                    Toast.makeText(view.context, "롱클릭", Toast.LENGTH_SHORT).show()
-                }
-                return@setOnLongClickListener true
-            }
-        }
+             binding.todoListText.setOnLongClickListener {
+                 Toast.makeText(it.context, "롱클릭", Toast.LENGTH_SHORT).show()
+
+                 return@setOnLongClickListener true
+             }
+         }
     }
 
 
