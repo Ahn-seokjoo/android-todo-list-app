@@ -1,27 +1,27 @@
 package com.example.todolist.view.main
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ItemTextBinding
 
 private val todoList = mutableListOf<Todo>()//비어있는 리스트로 일단 초기화
 
-class TodoListAdapter(private val itemClickListener: (view: View, position: Int) -> Unit) :
+class TodoListAdapter(private val itemClickListener: (view: View, position: Int) -> Unit, onItemLongClickListener: OnItemLongClickListenerInterface) :
     RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
     private val checkedMap = mutableMapOf<Todo, Boolean>()
-    private var mListener: OnItemLongClickListener? = null
+    private var onItemLongClickListener: OnItemLongClickListenerInterface? = null
 
-    interface OnItemLongClickListener {
-        fun onItemClick(v: View, position: Int)
+    init {
+        this.onItemLongClickListener = onItemLongClickListener
     }
 
-    fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
-        this.mListener = listener
+    interface OnItemLongClickListenerInterface {
+        fun onItemLongClick()
     }
 
     fun submitList(data: List<Todo>) {
@@ -31,25 +31,33 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
         //UI를 다시 그리는 메서드
     }
 
-     class ViewHolder(val binding: ItemTextBinding) : RecyclerView.ViewHolder(binding.root) {
-         fun bind(text: Todo, checkedMap: MutableMap<Todo, Boolean>) {
-             binding.checkBox.isChecked = checkedMap[todoList[adapterPosition]] ?: false
-             binding.todoListText.text = text.doList
-             binding.currentTimeText.text = text.time
+    class ViewHolder(val binding: ItemTextBinding, onItemLongClickListener: OnItemLongClickListenerInterface) : RecyclerView.ViewHolder(binding.root),
+        View.OnLongClickListener {
+        private var onItemLongClickListener: OnItemLongClickListenerInterface? = null
 
-             binding.todoListText.setOnLongClickListener {
-                 Toast.makeText(it.context, "롱클릭", Toast.LENGTH_SHORT).show()
+        init {
+            this.onItemLongClickListener = onItemLongClickListener
+            itemView.setOnLongClickListener(this)
+        }
 
-                 return@setOnLongClickListener true
-             }
-         }
+        fun bind(text: Todo, checkedMap: MutableMap<Todo, Boolean>) {
+            binding.checkBox.isChecked = checkedMap[todoList[adapterPosition]] ?: false
+            binding.todoListText.text = text.doList
+            binding.currentTimeText.text = text.time
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            Log.d(TAG, "viewholder long clicked")
+            this.onItemLongClickListener?.onItemLongClick()
+            return true
+        }
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding: ItemTextBinding = ItemTextBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, this.onItemLongClickListener!!)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -71,6 +79,7 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
     override fun getItemCount(): Int {
         return todoList.size
     }
+
 }
 
 
