@@ -6,21 +6,21 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ActivityMainBinding
+import com.example.todolist.view.adapter.TodoListAdapter
 import com.example.todolist.view.add.AddPageActivity
 import com.example.todolist.view.modify.ModifyPageActivity
 
-//삭제 기능 구현(체크 표시 된)
-//수정시에 수정 후 맨위로 오기
-//DB 이용
 val TAG = MainActivity::class.java.simpleName
 
-class MainActivity : AppCompatActivity(), TodoListAdapter.OnItemLongClickListenerInterface {
+
+class MainActivity : AppCompatActivity() {
     companion object {
         const val REQUEST_CODE_ADD = 100
         const val REQUEST_CODE_MODIFY = 200
         const val CONST_TO_DO = "todo"
     }
 
+    private val viewModel = MainViewModel()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,21 +28,33 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.OnItemLongClickListene
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter = TodoListAdapter({ _, _ -> //꼭 view,position이 아니라 필요한걸 받아줘도 된다
-        }, this)
+        val adapter = TodoListAdapter(itemClickListener = { todo -> //꼭 view,position이 아니라 필요한걸 받아줘도 된다
+            //수정 화면
+            val intent = Intent(this, ModifyPageActivity::class.java)
 
+            intent.putExtra("presentValue", todo)
+            startActivityForResult(intent, REQUEST_CODE_MODIFY)
+        }, onItemLongClickListener = { todo ->
+            //삭제
+
+        }
+        )
         binding.mRecyclerView.adapter = adapter
 
     }
+
     fun addButtonClick(view: View) {
         val intent = Intent(this, AddPageActivity::class.java)
         startActivityForResult(intent, REQUEST_CODE_ADD)
     }
-//    fun deleteButtonClick(view:View){
+
+//    fun deleteButtonClick(view: View) {
 //        //체크 된 listview 모두 삭제
-//        val adapter = TodoListAdapter{_,_-> }
-//        binding.mRecyclerView.adapter = adapter
-//        adapter.removeItem(adapter.getPosition())
+//        val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+//        if(adapter.checkedMap[todoList[0]] == true)
+//         {
+//             adapter.removeModifyItem(0)
+//         }
 //    }
 
 
@@ -53,30 +65,20 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.OnItemLongClickListene
             when (requestCode) {
                 REQUEST_CODE_ADD -> {
                     val todo = data.getSerializableExtra(CONST_TO_DO) as Todo
-                    val todoTime: List<Todo> = listOf(todo)
+                    viewModel.addTodo(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-                    adapter.submitList(todoTime)
+                    adapter.submitList(viewModel.todoList)
                 }
                 REQUEST_CODE_MODIFY -> {
-
                     val todo = data.getSerializableExtra(CONST_TO_DO) as Todo
-                    val todoTime: List<Todo> = listOf(todo)
+                    viewModel.updateTodo()
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-                    adapter.submitList(todoTime)
+                    adapter.submitList(viewModel.todoList)
                 }
             }
         }
-    }
-
-    override fun onItemLongClick(position: Int) {
-        val intent = Intent(this, ModifyPageActivity::class.java)
-        val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-        intent.putExtra("presentValue", adapter.returnItem(position))
-        //수정 후 기존의 것 삭제
-        adapter.removeModifyItem(position)
-        startActivityForResult(intent, REQUEST_CODE_MODIFY)
     }
 
 }

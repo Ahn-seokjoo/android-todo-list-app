@@ -18,12 +18,13 @@ class ModifyPageActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.modifyText.setText(intent.getStringExtra("presentValue").toString())
     }
-//    REQUEST_CODE_MODIFY
+
+    //    REQUEST_CODE_MODIFY
     fun modifyButtonClick(view: View) {
-    val intent = Intent()
-    val todo = Todo(binding.modifyText.text.toString(), LocalDateTime.now().toString())
-    intent.putExtra(MainActivity.CONST_TO_DO, todo)
-    setResult(Activity.RESULT_OK, intent)
-    finish()
-}
+        val intent = Intent()
+        val todo = Todo(binding.modifyText.text.toString(), LocalDateTime.now().toString())
+        intent.putExtra(MainActivity.CONST_TO_DO, todo)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
 }
