@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.OnItemLongClickListene
         val adapter = binding.mRecyclerView.adapter as TodoListAdapter
         intent.putExtra("presentValue", adapter.returnItem(position))
         //수정 후 기존의 것 삭제
-        adapter.removeItem(position)
+        adapter.removeModifyItem(position)
         startActivityForResult(intent, REQUEST_CODE_MODIFY)
     }
 

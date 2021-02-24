@@ -83,7 +83,7 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
         return todoList[position].doList
     }
 
-    fun removeItem(position: Int) {
+    fun removeModifyItem(position: Int) {
         todoList.removeAt(position)
         notifyItemRemoved(position)
         notifyDataSetChanged()
