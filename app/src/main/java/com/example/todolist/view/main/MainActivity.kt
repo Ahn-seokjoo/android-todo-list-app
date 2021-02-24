@@ -9,8 +9,9 @@ import com.example.todolist.databinding.ActivityMainBinding
 import com.example.todolist.view.add.AddPageActivity
 import com.example.todolist.view.modify.ModifyPageActivity
 
-// 수정시에 맨 위로 올라가기(수정 페이지는 원래 데이터 받아와서 수정)
-// 길게 누를시에 삭제, 수정 버튼 구현
+//삭제 기능 구현(체크 표시 된)
+//수정시에 수정 후 맨위로 오기
+//DB 이용
 val TAG = MainActivity::class.java.simpleName
 
 class MainActivity : AppCompatActivity(), TodoListAdapter.OnItemLongClickListenerInterface {
@@ -33,7 +34,6 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.OnItemLongClickListene
         binding.mRecyclerView.adapter = adapter
 
     }
-
     fun addButtonClick(view: View) {
         val intent = Intent(this, AddPageActivity::class.java)
         startActivityForResult(intent, REQUEST_CODE_ADD)
@@ -58,13 +58,26 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.OnItemLongClickListene
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
                     adapter.submitList(todoTime)
                 }
+                REQUEST_CODE_MODIFY -> {
+
+                    val todo = data.getSerializableExtra(CONST_TO_DO) as Todo
+                    val todoTime: List<Todo> = listOf(todo)
+
+                    val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+                    adapter.submitList(todoTime)
+                }
             }
         }
     }
 
-    override fun onItemLongClick() {
+    override fun onItemLongClick(position: Int) {
         val intent = Intent(this, ModifyPageActivity::class.java)
-        startActivity(intent)
+        val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+        intent.putExtra("presentValue", adapter.returnItem(position))
+        // 현재 클릭한 position 삭제 (수정해야함) + 수정
+
+        adapter.removeItem(position)
+        startActivityForResult(intent, REQUEST_CODE_MODIFY)
     }
 
 }

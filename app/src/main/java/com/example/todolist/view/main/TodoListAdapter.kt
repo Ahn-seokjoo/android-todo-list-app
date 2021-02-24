@@ -21,7 +21,7 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
     }
 
     interface OnItemLongClickListenerInterface {
-        fun onItemLongClick()
+        fun onItemLongClick(position: Int)
     }
 
     fun submitList(data: List<Todo>) {
@@ -48,11 +48,10 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
 
         override fun onLongClick(v: View?): Boolean {
             Log.d(TAG, "viewholder long clicked")
-            this.onItemLongClickListener?.onItemLongClick()
+            this.onItemLongClickListener?.onItemLongClick(adapterPosition)
             return true
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -78,6 +77,16 @@ class TodoListAdapter(private val itemClickListener: (view: View, position: Int)
 
     override fun getItemCount(): Int {
         return todoList.size
+    }
+
+    fun returnItem(position: Int): String {
+        return todoList[position].doList
+    }
+
+    fun removeItem(position: Int) {
+        todoList.removeAt(position)
+        notifyItemRemoved(position)
+        notifyDataSetChanged()
     }
 
 }
