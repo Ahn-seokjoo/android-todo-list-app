@@ -31,12 +31,12 @@ class MainActivity : AppCompatActivity() {
         val adapter = TodoListAdapter(itemClickListener = { todo -> //꼭 view,position이 아니라 필요한걸 받아줘도 된다
             //수정 화면
             val intent = Intent(this, ModifyPageActivity::class.java)
-
-            intent.putExtra("presentValue", todo)
+            intent.putExtra("presentValue", todo.doList)
             startActivityForResult(intent, REQUEST_CODE_MODIFY)
         }, onItemLongClickListener = { todo ->
             //삭제
 
+            viewModel.removeTodo(todo)
         }
         )
         binding.mRecyclerView.adapter = adapter
@@ -48,14 +48,7 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, REQUEST_CODE_ADD)
     }
 
-//    fun deleteButtonClick(view: View) {
-//        //체크 된 listview 모두 삭제
-//        val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-//        if(adapter.checkedMap[todoList[0]] == true)
-//         {
-//             adapter.removeModifyItem(0)
-//         }
-//    }
+//    add
 
 
     //데이터를 여기서 받아서 갱신해야함
@@ -72,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 REQUEST_CODE_MODIFY -> {
                     val todo = data.getSerializableExtra(CONST_TO_DO) as Todo
-                    viewModel.updateTodo()
+                    viewModel.updateTodo(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
                     adapter.submitList(viewModel.todoList)

@@ -19,8 +19,8 @@ class MainViewModel {
     }
 
     //수정
-    fun updateTodo() {
-
+    fun updateTodo(todo: Todo) {
+//        _todoList.
     }
 
 }
