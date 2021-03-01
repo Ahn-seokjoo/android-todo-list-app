@@ -58,18 +58,21 @@ class MainActivity : AppCompatActivity() {
 
     // 상태 저장
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putSerializable("todo", viewModel.todoList as ArrayList)
+//        outState.putSerializable("todo", viewModel.todoList as ArrayList)
+        outState.putParcelableArrayList("todo", viewModel.todoList as ArrayList)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        val todoList: ArrayList<Todo> = savedInstanceState.getSerializable("todo") as ArrayList<Todo>
-        viewModel.updateTodoList(todoList)
+//        val todoList: ArrayList<Todo> = savedInstanceState.getSerializable("todo") as ArrayList<Todo>
+        val todoList = savedInstanceState.getParcelableArrayList<Todo>("todo")?.let {
+            viewModel.updateTodoList(it)
+            val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+            adapter.submitList(viewModel.todoList)
+        }
 
-        val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-        adapter.submitList(viewModel.todoList)
     }
 
     fun addButtonClick(view: View) {
@@ -83,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK && data != null) {
             when (requestCode) {
                 REQUEST_CODE_ADD -> {
-                    val todo = data.getSerializableExtra(CONST_TO_DO) as Todo
+                    val todo = data.getParcelableExtra<Todo>(CONST_TO_DO) as Todo
                     viewModel.addTodo(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
@@ -91,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                     adapter.submitList(viewModel.todoList)
                 }
                 REQUEST_CODE_MODIFY -> {
-                    val todo = data.getSerializableExtra(CONST_TO_DO) as Todo
+                    val todo = data.getParcelableExtra<Todo>(CONST_TO_DO) as Todo
                     viewModel.updateTodo(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter

@@ -23,9 +23,11 @@ class TodoListAdapter(
     override fun onBindViewHolder(holderTodo: TodoViewHolder, position: Int) {
         holderTodo.bind(getItem(holderTodo.adapterPosition), checkedMap)
 
-        holderTodo.binding.root.setOnClickListener {
+        holderTodo.binding.checkBox.setOnClickListener {
             val currentValue = checkedMap[getItem(holderTodo.adapterPosition)] ?: false
             checkedMap[getItem(holderTodo.adapterPosition)] = !currentValue
+        }
+        holderTodo.binding.root.setOnClickListener {
             itemClickListener.invoke(getItem(holderTodo.adapterPosition))
             notifyDataSetChanged()
         }
