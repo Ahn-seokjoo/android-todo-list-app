@@ -3,7 +3,9 @@ package com.example.todolist.view.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.todolist.R
 import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ActivityMainBinding
 import com.example.todolist.view.adapter.TodoListAdapter
@@ -35,10 +37,18 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE_MODIFY)
         }, onItemLongClickListener = { todo ->
             //삭제
+            val builder = AlertDialog.Builder(this)
+            val dialogView = layoutInflater.inflate(R.layout.delete_dialog, null)
+            builder.setView(dialogView)
+                .setPositiveButton("삭제하기") { _, _ ->
+                    viewModel.removeTodo(todo)
+                }
+                .setNegativeButton("취소") { _, _ ->
 
-            viewModel.removeTodo(todo)
+                }.show()
         }
         )
+        adapter.submitList(viewModel.todoList)
         binding.mRecyclerView.adapter = adapter
 
     }
@@ -47,9 +57,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, AddPageActivity::class.java)
         startActivityForResult(intent, REQUEST_CODE_ADD)
     }
-
-//    add
-
 
     //데이터를 여기서 받아서 갱신해야함
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
