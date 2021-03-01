@@ -20,28 +20,17 @@ class TodoListAdapter(
         return TodoViewHolder(binding)
     }
 
-    override fun onBindViewHolder(hodlerTodo: TodoViewHolder, position: Int) {
-        hodlerTodo.bind(getItem(position), checkedMap)
+    override fun onBindViewHolder(holderTodo: TodoViewHolder, position: Int) {
+        holderTodo.bind(getItem(holderTodo.adapterPosition), checkedMap)
 
-        hodlerTodo.binding.root.setOnClickListener {
-            val currentValue = checkedMap[getItem(position)] ?: false
-            checkedMap[getItem(position)] = !currentValue
-            itemClickListener.invoke(getItem(position))
+        holderTodo.binding.root.setOnClickListener {
+            val currentValue = checkedMap[getItem(holderTodo.adapterPosition)] ?: false
+            checkedMap[getItem(holderTodo.adapterPosition)] = !currentValue
+            itemClickListener.invoke(getItem(holderTodo.adapterPosition))
             notifyDataSetChanged()
         }
-        hodlerTodo.binding.todoListText.setOnClickListener {
-            val currentValue = checkedMap[getItem(position)] ?: false
-            checkedMap[getItem(position)] = !currentValue
-            itemClickListener.invoke(getItem(position))
-        }
-        hodlerTodo.binding.root.setOnLongClickListener {
-            onItemLongClickListener.invoke(getItem(position))
-            notifyDataSetChanged()
-            true
-        }
-        hodlerTodo.binding.todoListText.setOnLongClickListener {
-            onItemLongClickListener.invoke(getItem(position))
-            notifyDataSetChanged()
+        holderTodo.binding.root.setOnLongClickListener {
+            onItemLongClickListener.invoke(getItem(holderTodo.adapterPosition))
             true
         }
 

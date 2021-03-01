@@ -42,15 +42,34 @@ class MainActivity : AppCompatActivity() {
             builder.setView(dialogView)
                 .setPositiveButton("삭제하기") { _, _ ->
                     viewModel.removeTodo(todo)
+                    val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+
+                    adapter.submitList(viewModel.todoList)
                 }
                 .setNegativeButton("취소") { _, _ ->
 
                 }.show()
         }
         )
-        adapter.submitList(viewModel.todoList)
+
         binding.mRecyclerView.adapter = adapter
 
+    }
+
+    // 상태 저장
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable("todo", viewModel.todoList as ArrayList)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        val todoList: ArrayList<Todo> = savedInstanceState.getSerializable("todo") as ArrayList<Todo>
+        viewModel.updateTodoList(todoList)
+
+        val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+        adapter.submitList(viewModel.todoList)
     }
 
     fun addButtonClick(view: View) {
@@ -68,6 +87,7 @@ class MainActivity : AppCompatActivity() {
                     viewModel.addTodo(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+                    adapter.submitList(null)
                     adapter.submitList(viewModel.todoList)
                 }
                 REQUEST_CODE_MODIFY -> {
@@ -75,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                     viewModel.updateTodo(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+                    adapter.submitList(null)
                     adapter.submitList(viewModel.todoList)
                 }
             }
