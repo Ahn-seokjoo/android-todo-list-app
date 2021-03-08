@@ -8,7 +8,8 @@ class MainViewModel {
     private val _todoList = mutableListOf<Todo>()//비어있는 리스트로 일단 초기화
 
     val todoList: List<Todo>
-        get() = _todoList.toMutableList()
+        get() = _todoList.sortedBy { it.time }.toMutableList()
+
 
     // 추가
     fun addTodo(todo: Todo) {

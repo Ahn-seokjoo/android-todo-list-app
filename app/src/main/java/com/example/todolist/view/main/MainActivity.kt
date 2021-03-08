@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton("삭제하기") { _, _ ->
                     viewModel.removeTodo(todo)
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-
                     adapter.submitList(viewModel.todoList)
                 }
                 .setNegativeButton("취소") { _, _ ->
@@ -90,7 +89,6 @@ class MainActivity : AppCompatActivity() {
                     viewModel.addTodo(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-                    adapter.submitList(null)
                     adapter.submitList(viewModel.todoList)
                 }
                 REQUEST_CODE_MODIFY -> {
@@ -98,7 +96,6 @@ class MainActivity : AppCompatActivity() {
                     viewModel.updateTodo(todo)
 
                     val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-                    adapter.submitList(null)
                     adapter.submitList(viewModel.todoList)
                 }
             }

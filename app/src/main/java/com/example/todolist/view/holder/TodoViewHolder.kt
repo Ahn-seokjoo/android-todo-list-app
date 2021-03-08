@@ -11,7 +11,6 @@ class TodoViewHolder(val binding: ItemTextBinding) :
         binding.checkBox.isChecked = checkedMap[text] ?: false
         binding.todoListText.text = text.doList
         binding.currentTimeText.text = text.time
-
     }
 
 }
