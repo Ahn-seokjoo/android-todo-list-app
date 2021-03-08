@@ -7,7 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ActivityAddPageBinding
-import com.example.todolist.view.main.MainActivity.Companion.CONST_TO_DO
+import com.example.todolist.view.main.MainFragment.Companion.CONST_TO_DO
 import java.time.LocalDateTime
 
 class AddPageActivity : AppCompatActivity() {

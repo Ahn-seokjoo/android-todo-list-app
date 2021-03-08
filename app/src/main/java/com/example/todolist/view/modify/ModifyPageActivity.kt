@@ -7,7 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todolist.data.Todo
 import com.example.todolist.databinding.ActivityModyfyPageBinding
-import com.example.todolist.view.main.MainActivity
+import com.example.todolist.view.main.MainFragment.Companion.CONST_TO_DO
 import java.time.LocalDateTime
 
 class ModifyPageActivity : AppCompatActivity() {
@@ -23,7 +23,7 @@ class ModifyPageActivity : AppCompatActivity() {
     fun modifyButtonClick(view: View) {
         val intent = Intent()
         val todo = Todo(binding.modifyText.text.toString(), LocalDateTime.now().toString())
-        intent.putExtra(MainActivity.CONST_TO_DO, todo)
+        intent.putExtra(CONST_TO_DO, todo)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
