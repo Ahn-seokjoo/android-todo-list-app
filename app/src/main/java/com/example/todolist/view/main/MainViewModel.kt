@@ -8,22 +8,31 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class MainViewModel : ViewModel() {
     var id = AtomicInteger(0)
+
     private val _todoList = mutableListOf<Todo>()//비어있는 리스트로 일단 초기화
 
     val todoList: List<Todo>
         get() = _todoList.sortedBy { it.time }.toMutableList()
+
+    private val _todoListLiveData = MutableLiveData<List<Todo>>()
+
     val todoListLiveData: LiveData<List<Todo>>
-        get() = MutableLiveData(_todoList.toMutableList())
+        get() = _todoListLiveData
+
+    var selectedTodo: Todo? = null
 
     // 추가
     fun addTodo(todo: Todo) {
         todo.id = id.getAndIncrement()
         _todoList.add(todo)
+
+        _todoListLiveData.value = _todoList
     }
 
     //삭제
     fun removeTodo(todo: Todo) {
         _todoList.remove(todo)
+        _todoListLiveData.value = _todoList
     }
 
     //수정
@@ -40,6 +49,7 @@ class MainViewModel : ViewModel() {
             clear()
             addAll(changeData)
         }
+        _todoListLiveData.value = _todoList
     }
 
     fun updateTodoList(todoList: List<Todo>) {
