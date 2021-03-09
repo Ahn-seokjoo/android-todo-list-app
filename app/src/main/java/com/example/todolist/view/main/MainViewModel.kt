@@ -1,14 +1,19 @@
 package com.example.todolist.view.main
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.todolist.data.Todo
 import java.util.concurrent.atomic.AtomicInteger
 
-class MainViewModel {
+class MainViewModel : ViewModel() {
     var id = AtomicInteger(0)
     private val _todoList = mutableListOf<Todo>()//비어있는 리스트로 일단 초기화
 
     val todoList: List<Todo>
         get() = _todoList.sortedBy { it.time }.toMutableList()
+    val todoListLiveData: LiveData<List<Todo>>
+        get() = MutableLiveData(_todoList.toMutableList())
 
     // 추가
     fun addTodo(todo: Todo) {
