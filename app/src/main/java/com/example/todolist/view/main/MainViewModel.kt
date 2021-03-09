@@ -10,7 +10,6 @@ class MainViewModel {
     val todoList: List<Todo>
         get() = _todoList.sortedBy { it.time }.toMutableList()
 
-
     // 추가
     fun addTodo(todo: Todo) {
         todo.id = id.getAndIncrement()

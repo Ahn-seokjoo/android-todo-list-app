@@ -6,11 +6,12 @@ import com.example.todolist.R
 
 val TAG = MainActivity::class.java.simpleName
 
-
 class MainActivity : AppCompatActivity() {
+    private val viewModel = MainViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.fragment_main)
     }
 }
 

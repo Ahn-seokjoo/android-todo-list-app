@@ -16,7 +16,7 @@ import com.example.todolist.view.add.AddPageActivity
 import com.example.todolist.view.modify.ModifyPageActivity
 
 
-class MainFragment : Fragment() {
+class MainFragment(private val viewModel: MainViewModel) : Fragment() {
     companion object {
         const val REQUEST_CODE_ADD = 100
         const val REQUEST_CODE_MODIFY = 200
@@ -25,7 +25,6 @@ class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private val viewModel = MainViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -52,13 +51,13 @@ class MainFragment : Fragment() {
         )
         binding.mRecyclerView.adapter = adapter
         binding.addButton.setOnClickListener {
-            addButtonClick()
+            val intent = Intent(requireContext(), AddPageActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE_ADD)
         }
         //상태 복원
         savedInstanceState?.let {
             it.getParcelableArrayList<Todo>("todo")?.let { todoList ->
-                viewModel.updateTodoList(todoList)
-                adapter.submitList(viewModel.todoList)
+                addButtonClick()
             }
         }
 
