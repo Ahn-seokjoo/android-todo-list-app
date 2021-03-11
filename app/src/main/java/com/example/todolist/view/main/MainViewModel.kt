@@ -44,7 +44,7 @@ class MainViewModel : ViewModel() {
             } else {
                 it
             }
-        }
+        }.sortedBy { it.time }
         _todoList.apply {
             clear()
             addAll(changeData)
