@@ -1,5 +1,6 @@
 package com.example.todolist.view.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,14 +26,15 @@ class MainViewModel : ViewModel() {
     fun addTodo(todo: Todo) {
         todo.id = id.getAndIncrement()
         _todoList.add(todo)
-
-        _todoListLiveData.value = _todoList
+        _todoListLiveData.value = _todoList.toMutableList()
+        Log.d(TAG, "addTodo: 추가 하기")
     }
 
     //삭제
     fun removeTodo(todo: Todo) {
         _todoList.remove(todo)
-        _todoListLiveData.value = _todoList
+        _todoListLiveData.value = _todoList.toMutableList()
+        Log.d(TAG, "removeTodo: 삭제 하기")
     }
 
     //수정
@@ -49,7 +51,8 @@ class MainViewModel : ViewModel() {
             clear()
             addAll(changeData)
         }
-        _todoListLiveData.value = _todoList
+        Log.d(TAG, "updateTodo: 수정 하기")
+        _todoListLiveData.value = _todoList.toMutableList()
     }
 
     fun updateTodoList(todoList: List<Todo>) {

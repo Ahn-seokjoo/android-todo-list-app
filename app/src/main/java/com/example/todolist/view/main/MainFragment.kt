@@ -1,6 +1,7 @@
 package com.example.todolist.view.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.example.todolist.databinding.FragmentMainBinding
 import com.example.todolist.view.adapter.TodoListAdapter
 import com.example.todolist.view.add.AddPageFragment
 import com.example.todolist.view.modify.ModifyPageFragment
-
 
 class MainFragment : Fragment() {
     //프래그먼트 파괴시 파괴
@@ -45,8 +45,7 @@ class MainFragment : Fragment() {
             builder.setView(dialogView)
                 .setPositiveButton("삭제하기") { _, _ ->
                     viewModel.removeTodo(todo)
-                    val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-                    adapter.submitList(viewModel.todoList)
+                    watching()
                 }
                 .setNegativeButton("취소") { _, _ ->
 
@@ -64,10 +63,10 @@ class MainFragment : Fragment() {
                 adapter.submitList(viewModel.todoList)
             }
         }
-
         //데이터 관찰
         viewModel.todoListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+            Log.d(TAG, "onCreateView: 옵저빙")
         }
         return binding.root
     }
@@ -79,6 +78,14 @@ class MainFragment : Fragment() {
             setReorderingAllowed(true)
             addToBackStack(null)
             replace<AddPageFragment>(R.id.fragment_container_view)
+        }
+    }
+
+    fun watching() {
+        val adapter = binding.mRecyclerView.adapter as TodoListAdapter
+        viewModel.todoListLiveData.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+            Log.d(TAG, "onCreateView: 옵저빙")
         }
     }
 
