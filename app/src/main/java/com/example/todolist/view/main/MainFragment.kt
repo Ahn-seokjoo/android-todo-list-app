@@ -45,7 +45,6 @@ class MainFragment : Fragment() {
             builder.setView(dialogView)
                 .setPositiveButton("삭제하기") { _, _ ->
                     viewModel.removeTodo(todo)
-                    watching()
                 }
                 .setNegativeButton("취소") { _, _ ->
 
@@ -78,14 +77,6 @@ class MainFragment : Fragment() {
             setReorderingAllowed(true)
             addToBackStack(null)
             replace<AddPageFragment>(R.id.fragment_container_view)
-        }
-    }
-
-    fun watching() {
-        val adapter = binding.mRecyclerView.adapter as TodoListAdapter
-        viewModel.todoListLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            Log.d(TAG, "onCreateView: 옵저빙")
         }
     }
 
