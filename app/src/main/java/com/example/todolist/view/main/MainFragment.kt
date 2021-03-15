@@ -1,7 +1,6 @@
 package com.example.todolist.view.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.todolist.R
-import com.example.todolist.data.Todo
 import com.example.todolist.databinding.FragmentMainBinding
 import com.example.todolist.view.adapter.TodoListAdapter
 import com.example.todolist.view.add.AddPageFragment
@@ -56,16 +54,16 @@ class MainFragment : Fragment() {
             addButtonClick()
         }
         //상태 복원
-        savedInstanceState?.let {
-            it.getParcelableArrayList<Todo>("todo")?.let { todoList ->
-                viewModel.updateTodoList(todoList)
-                adapter.submitList(viewModel.todoList)
-            }
-        }
+//        savedInstanceState?.let {
+//            it.getParcelableArrayList<Todo>("todo")?.let { todoList ->
+//                viewModel.updateTodoList(todoList)
+//                adapter.submitList(todoList)
+//            }
+//        }
         //데이터 관찰
         viewModel.todoListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            Log.d(TAG, "onCreateView: 옵저빙")
+//            Log.d(TAG, "onCreateView: 옵저빙")
         }
         return binding.root
     }
@@ -87,9 +85,9 @@ class MainFragment : Fragment() {
     }
 
     //상태 저장
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList("todo", viewModel.todoList as ArrayList)
-        super.onSaveInstanceState(outState)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        outState.putParcelableArrayList("todo", viewModel.todoList as ArrayList)
+//        super.onSaveInstanceState(outState)
+//    }
 
 }
