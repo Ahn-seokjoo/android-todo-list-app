@@ -12,7 +12,7 @@ class TodoListAdapter(
     private val onItemLongClickListener: (todo: Todo) -> Unit
 ) : ListAdapter<Todo, TodoViewHolder>(TodoDiffCallback) {
 
-    private val checkedMap = mutableMapOf<Todo, Boolean>()
+    private val checkedMap = HashMap<Todo, Boolean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,7 +21,9 @@ class TodoListAdapter(
     }
 
     override fun onBindViewHolder(holderTodo: TodoViewHolder, position: Int) {
-        holderTodo.bind(getItem(holderTodo.adapterPosition), checkedMap)
+//        holderTodo.bind(getItem(holderTodo.adapterPosition), checkedMap)
+        holderTodo.binding.todo = getItem(holderTodo.adapterPosition)
+        holderTodo.binding.checkedMap = checkedMap
 
         holderTodo.binding.checkBox.setOnClickListener {
             val currentValue = checkedMap[getItem(holderTodo.adapterPosition)] ?: false
