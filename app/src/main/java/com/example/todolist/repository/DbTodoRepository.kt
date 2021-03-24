@@ -4,26 +4,31 @@ import android.content.Context
 import androidx.room.Room
 import com.example.todolist.data.Todo
 import com.example.todolist.data.source.local.TodoDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class DbTodoRepository(context: Context) : Repository {
     private val db = Room.databaseBuilder(context, TodoDatabase::class.java, "todo.db")
-        .allowMainThreadQueries()
         .build()
 
-    override fun getAll(): List<Todo> {
-        return db.todoDao().getAll()
+    override suspend fun getAll(): List<Todo> = withContext(Dispatchers.IO) {
+        return@withContext db.todoDao().getAll()
     }
 
-    override fun addTodo(todo: Todo) {
+    override suspend fun addTodo(todo: Todo) {
         db.todoDao().addTodo(todo)
     }
 
-    override fun removeTodo(todo: Todo) {
+    override suspend fun removeTodo(todo: Todo) = withContext(Dispatchers.IO) {
         db.todoDao().removeTodo(todo)
     }
 
-    override fun updateTodo(todo: Todo) {
+    override suspend fun updateTodo(todo: Todo) {
         db.todoDao().updateTodo(todo)
     }
+
     // 메인스레드에서 db 접근시 죽는다
+    fun updateTodoList(todoList: List<Todo>, todo: Todo) {
+        db.todoDao().updateTodo(todo)
+    }
 }

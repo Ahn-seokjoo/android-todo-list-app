@@ -8,25 +8,25 @@ class MemoryTodoRepository : Repository {
 
     private val _todoList = mutableListOf<Todo>()//비어있는 리스트로 일단 초기화
 
-    override fun getAll(): List<Todo> {
+    override suspend fun getAll(): List<Todo> {
         return _todoList.sortedBy { it.time }.toMutableList()
     }
 
     // 추가
-    override fun addTodo(todo: Todo) {
+    override suspend fun addTodo(todo: Todo) {
         todo.id = id.getAndIncrement()
         _todoList.add(todo)
 //        Log.d(TAG, "addTodo: 추가 하기")
     }
 
     //삭제
-    override fun removeTodo(todo: Todo) {
+    override suspend fun removeTodo(todo: Todo) {
         _todoList.remove(todo)
 //        Log.d(TAG, "removeTodo: 삭제 하기")
     }
 
     //수정
-    override fun updateTodo(todo: Todo) {
+    override suspend fun updateTodo(todo: Todo) {
         val changeData = _todoList.map {
             //매핑해줌
             if (it.id == todo.id) {

@@ -17,5 +17,6 @@ interface TodoDao {
     @Update
     fun updateTodo(todo: Todo)
 
-
+    @Update
+    fun updateTodoList(todoList: List<Todo>)
 }
