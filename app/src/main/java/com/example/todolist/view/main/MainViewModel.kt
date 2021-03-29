@@ -29,7 +29,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) { 
         viewModelScope.launch(Dispatchers.IO) {
             repository.addTodo(todo)
             _todoListLiveData.postValue(repository.getAll())
-            //        Log.d(TAG, "addTodo: 추가 하기")
         }
     }
 
@@ -39,7 +38,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) { 
             repository.removeTodo(todo)
             _todoListLiveData.value = repository.getAll()
         }
-//        Log.d(TAG, "removeTodo: 삭제 하기")
     }
 
     //수정
@@ -50,10 +48,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) { 
                 _todoListLiveData.postValue(repository.getAll())
             }
         }
-//        Log.d(TAG, "updateTodo: 수정 하기")
     }
+
     // 네트워크, 데이터베이스 반드시 백그라운드
-//    fun updateTodoList(todoList: List<Todo>) {
-//        repository.updateTodoList(todoList)
-//    }
+    suspend fun updateTodoList(todo: Todo) {
+        repository.updateTodoList(todo)
+    }
 }

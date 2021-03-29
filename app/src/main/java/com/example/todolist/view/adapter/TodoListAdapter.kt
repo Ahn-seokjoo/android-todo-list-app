@@ -17,6 +17,7 @@ class TodoListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding: ItemTextBinding = ItemTextBinding.inflate(inflater, parent, false)
+
         return TodoViewHolder(binding)
     }
 

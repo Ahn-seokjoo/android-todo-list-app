@@ -42,8 +42,8 @@ class MemoryTodoRepository : Repository {
 //        Log.d(TAG, "updateTodo: 수정 하기")
     }
 
-    fun updateTodoList(todoList: List<Todo>) {
+    override suspend fun updateTodoList(todo: Todo) {
         _todoList.clear()
-        _todoList.addAll(todoList)
+        _todoList.add(todo)
     }
 }

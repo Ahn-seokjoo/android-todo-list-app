@@ -28,7 +28,7 @@ class DbTodoRepository(context: Context) : Repository {
     }
 
     // 메인스레드에서 db 접근시 죽는다
-    fun updateTodoList(todoList: List<Todo>, todo: Todo) {
+    override suspend fun updateTodoList(todo: Todo) {
         db.todoDao().updateTodo(todo)
     }
 }

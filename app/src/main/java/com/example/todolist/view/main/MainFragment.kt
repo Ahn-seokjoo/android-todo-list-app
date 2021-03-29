@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.todolist.R
+import com.example.todolist.data.Todo
 import com.example.todolist.databinding.FragmentMainBinding
 import com.example.todolist.view.adapter.TodoListAdapter
 import com.example.todolist.view.add.AddPageFragment
@@ -49,21 +50,23 @@ class MainFragment : Fragment() {
                 }.show()
         }
         )
+
         binding.mRecyclerView.adapter = adapter
         binding.addButton.setOnClickListener {
             addButtonClick()
         }
         //상태 복원
-//        savedInstanceState?.let {
-//            it.getParcelableArrayList<Todo>("todo")?.let { todoList ->
-//                viewModel.updateTodoList(todoList)
-//                adapter.submitList(todoList)
-//            }
-//        }
+        savedInstanceState?.let {
+            it.getParcelableArrayList<Todo>("todo")?.let { todoList ->
+//                viewModel.updateTodo()
+                adapter.submitList(todoList)
+            }
+        }
+        val todo = Todo(" ", " ")
+        viewModel.updateTodo(todo)
         //데이터 관찰
         viewModel.todoListLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-//            Log.d(TAG, "onCreateView: 옵저빙")
         }
         return binding.root
     }
