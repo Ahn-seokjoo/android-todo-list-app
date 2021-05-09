@@ -24,3 +24,4 @@
 - minSdkVersion - 29
 - targetSdkVersion - 30
 - target - Android 11.0(Google APIs) 
+- Test device - Nexus 5x API 30(VM)
