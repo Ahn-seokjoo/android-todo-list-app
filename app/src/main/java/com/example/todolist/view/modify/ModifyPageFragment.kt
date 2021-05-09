@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.todolist.databinding.FragmentModifyPageBinding
 import com.example.todolist.view.main.MainViewModel
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ModifyPageFragment : Fragment() {
     private var _binding: FragmentModifyPageBinding? = null
@@ -31,7 +32,8 @@ class ModifyPageFragment : Fragment() {
             binding.modifyButton.setOnClickListener {
                 todo.apply {
                     todo.doList = binding.modifyText.text.toString()
-                    todo.time = LocalDateTime.now().toString()
+                    val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")
+                    todo.time = LocalDateTime.now().format(formatter).toString()
                 }
                 viewModel.updateTodo(todo)
                 parentFragmentManager.popBackStack()

@@ -10,6 +10,7 @@ import com.example.todolist.data.Todo
 import com.example.todolist.databinding.FragmentAddPageBinding
 import com.example.todolist.view.main.MainViewModel
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class AddPageFragment : Fragment() {
     private var _binding: FragmentAddPageBinding? = null
@@ -21,7 +22,10 @@ class AddPageFragment : Fragment() {
     ): View {
         _binding = FragmentAddPageBinding.inflate(inflater, container, false)
         binding.addButton.setOnClickListener {
-            val todo = Todo(binding.todoText.text.toString(), LocalDateTime.now().toString())
+            val todo = Todo(
+                binding.todoText.text.toString(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")).toString()
+            )
             viewModel.addTodo(todo)
 
             //뒤로가기
