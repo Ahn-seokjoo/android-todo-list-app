@@ -17,6 +17,7 @@
 - Room
 - LiveData
 - ViewModel
+- Fragment
 
 ### **개발 환경**
 ---
